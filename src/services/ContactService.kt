@@ -35,4 +35,14 @@ class ContactService {
     fun getContactList(): List<ContactEntity> {
         return ContactRepository.getContactList()
     }
+
+    fun getContactCountDescription(): String {
+        val list = getContactList()
+
+        return when {
+            list.isNullOrEmpty() -> "0 Contacts"
+            list.size == 1 -> "1 Contact"
+            else -> "${list.size} Contacts"
+        }
+    }
 }

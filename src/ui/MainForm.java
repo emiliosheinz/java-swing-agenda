@@ -4,6 +4,7 @@ import entity.ContactEntity;
 import services.ContactService;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,6 +19,7 @@ public class MainForm extends JFrame {
     private JButton newContactButton;
     private JButton removeContactButton;
     private JTable contactsTable;
+    private JLabel contactsCoutLabel;
 
     private ContactService contactService;
 
@@ -56,6 +58,23 @@ public class MainForm extends JFrame {
 
     private void loadContacts() {
         List<ContactEntity> contactEntityList = contactService.getContactList();
+
+        String[] columnNames = {"NAME", "NUMBER"};
+        DefaultTableModel model = new DefaultTableModel(new Object[0][0], columnNames);
+
+        for (ContactEntity c : contactEntityList) {
+            Object[] contact = new Object[2];
+
+            contact[0] = c.getName();
+            contact[1] = c.getPhoneNumber();
+
+            model.addRow(contact);
+        }
+
+        contactsTable.clearSelection();
+        contactsTable.setModel(model);
+
+        contactsCoutLabel.setText(contactService.getContactCountDescription());
     }
 
     private Dimension getScreenDimension() {
