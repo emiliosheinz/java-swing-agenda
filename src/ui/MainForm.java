@@ -2,6 +2,8 @@ package ui;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class MainForm extends JFrame {
     private static int PANEL_WIDTH = 500;
@@ -22,6 +24,25 @@ public class MainForm extends JFrame {
 
         setLocation(calculateHorizontalLocation(screenDimension), calculateVerticalLocation(screenDimension));
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
+        setListeners();
+    }
+
+    private void setListeners() {
+        newContactButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                new ContactForm();
+                dispose();
+            }
+        });
+
+        removeContactButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+
+            }
+        });
     }
 
     private Dimension getScreenDimension() {
