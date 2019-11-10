@@ -1,6 +1,10 @@
 package services
 
+import entity.ContactEntity
+import repository.ContactRepository
+
 class ContactService {
+
     private fun validateSaveFields(name: String, phoneNumber: String) {
         if (name.isNullOrBlank()) {
             throw IllegalArgumentException("Name cannot be empty.")
@@ -17,11 +21,14 @@ class ContactService {
         }
     }
 
-    fun saveUserInAgenda(name: String, phoneNumber: String) {
+    fun save(name: String, phoneNumber: String) {
         validateSaveFields(name, phoneNumber)
+
+        val contact = ContactEntity(name, phoneNumber)
+        ContactRepository.save(contact)
     }
 
-    fun removeUserFromAgenda(name: String, phoneNumber: String) {
+    fun delete(name: String, phoneNumber: String) {
         validateDeleteFields(name, phoneNumber)
     }
 }
