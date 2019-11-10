@@ -1,6 +1,7 @@
 package ui;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class MainForm extends JFrame {
     private static int PANEL_WIDTH = 500;
@@ -16,6 +17,22 @@ public class MainForm extends JFrame {
         setContentPane(rootPanel);
         setSize(PANEL_WIDTH, PANEL_HEIGHT);
         setVisible(PANEL_VISIBILITY);
+
+        Dimension screenDimension = getScreenDimension();
+
+        setLocation(calculateHorizontalLocation(screenDimension), calculateVerticalLocation(screenDimension));
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
 
+    private Dimension getScreenDimension() {
+        return Toolkit.getDefaultToolkit().getScreenSize();
+    }
+
+    private int calculateHorizontalLocation(Dimension screenDimension) {
+        return screenDimension.width / 2 - getSize().width / 2;
+    }
+
+    private int calculateVerticalLocation(Dimension screenDimension) {
+        return screenDimension.height / 2 - getSize().height / 2;
+    }
 }
