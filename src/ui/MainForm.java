@@ -1,9 +1,13 @@
 package ui;
 
+import entity.ContactEntity;
+import services.ContactService;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 public class MainForm extends JFrame {
     private static int PANEL_WIDTH = 500;
@@ -15,6 +19,8 @@ public class MainForm extends JFrame {
     private JButton removeContactButton;
     private JTable contactsTable;
 
+    private ContactService contactService;
+
     public MainForm() {
         setContentPane(rootPanel);
         setSize(PANEL_WIDTH, PANEL_HEIGHT);
@@ -25,7 +31,10 @@ public class MainForm extends JFrame {
         setLocation(calculateHorizontalLocation(screenDimension), calculateVerticalLocation(screenDimension));
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
+        contactService = new ContactService();
+
         setListeners();
+        loadContacts();
     }
 
     private void setListeners() {
@@ -43,6 +52,10 @@ public class MainForm extends JFrame {
 
             }
         });
+    }
+
+    private void loadContacts() {
+        List<ContactEntity> contactEntityList = contactService.getContactList();
     }
 
     private Dimension getScreenDimension() {

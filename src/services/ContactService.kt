@@ -31,4 +31,8 @@ class ContactService {
     fun delete(name: String, phoneNumber: String) {
         validateDeleteFields(name, phoneNumber)
     }
+
+    fun getContactList(): List<ContactEntity> {
+        return ContactRepository.getContactList()
+    }
 }

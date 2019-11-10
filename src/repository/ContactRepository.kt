@@ -14,5 +14,9 @@ class ContactRepository {
         fun delete(contact: ContactEntity) {
 
         }
+
+        fun getContactList(): List<ContactEntity> {
+            return contactList
+        }
     }
 }
