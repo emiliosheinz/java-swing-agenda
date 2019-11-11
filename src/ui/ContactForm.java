@@ -1,5 +1,7 @@
 package ui;
 
+import services.ContactService;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -19,6 +21,8 @@ public class ContactForm extends JFrame {
     private JButton cancelButton;
     private JButton saveButton;
 
+    private ContactService contactService;
+
     public ContactForm() {
         setContentPane(rootPanel);
         setSize(PANEL_WIDTH, PANEL_HEIGHT);
@@ -29,6 +33,8 @@ public class ContactForm extends JFrame {
         setLocation(calculateHorizontalLocation(screenDimension), calculateVerticalLocation(screenDimension));
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
+        contactService = new ContactService();
+
         setListeners();
     }
 
@@ -36,7 +42,17 @@ public class ContactForm extends JFrame {
         saveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
+                try {
+                    String name = nameInput.getText();
+                    String phoneNumber = numberInput.getText();
 
+                    contactService.save(name, phoneNumber);
+
+                    new MainForm();
+                    dispose();
+                } catch (IllegalArgumentException exception) {
+                    JOptionPane.showMessageDialog(new JFrame(), exception.getMessage());
+                }
             }
         });
 
