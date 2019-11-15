@@ -17,7 +17,7 @@ class ContactService {
 
     private fun validateDeleteFields(name: String, phoneNumber: String) {
         if(name.isNullOrBlank() || phoneNumber.isNullOrBlank()) {
-            throw IllegalArgumentException("You need to select a contact no remove.")
+            throw IllegalArgumentException("You need to select a contact to remove.")
         }
     }
 
@@ -30,6 +30,9 @@ class ContactService {
 
     fun delete(name: String, phoneNumber: String) {
         validateDeleteFields(name, phoneNumber)
+
+        val contact = ContactEntity(name, phoneNumber)
+        ContactRepository.delete(contact)
     }
 
     fun getContactList(): List<ContactEntity> {

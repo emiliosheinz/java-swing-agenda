@@ -4,6 +4,8 @@ import entity.ContactEntity;
 import services.ContactService;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -19,7 +21,10 @@ public class MainForm extends JFrame {
     private JButton newContactButton;
     private JButton removeContactButton;
     private JTable contactsTable;
-    private JLabel contactsCoutLabel;
+    private JLabel contactsCountLabel;
+
+    private String name = "";
+    private String phoneNumber = "";
 
     private ContactService contactService;
 
@@ -48,10 +53,32 @@ public class MainForm extends JFrame {
             }
         });
 
+        contactsTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent listSelectionEvent) {
+                if (listSelectionEvent.getValueIsAdjusting()) {
+                    int selectedRow = contactsTable.getSelectedRow();
+
+                    if(selectedRow != -1) {
+                        name  = contactsTable.getValueAt(selectedRow, 0).toString();
+                        phoneNumber = contactsTable.getValueAt(selectedRow, 1).toString();
+                    }
+                }
+            }
+        });
+
         removeContactButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
+                try {
+                    contactService.delete(name, phoneNumber);
+                    loadContacts();
 
+                    name = "";
+                    phoneNumber = "";
+                } catch (IllegalArgumentException exception) {
+                    JOptionPane.showMessageDialog(new JFrame(), exception.getMessage());
+                }
             }
         });
     }
@@ -74,7 +101,7 @@ public class MainForm extends JFrame {
         contactsTable.clearSelection();
         contactsTable.setModel(model);
 
-        contactsCoutLabel.setText(contactService.getContactCountDescription());
+        contactsCountLabel.setText(contactService.getContactCountDescription());
     }
 
     private Dimension getScreenDimension() {
